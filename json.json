@@ -1,0 +1,14 @@
+[
+    {
+        "product_id": 1,
+        "product_name": "product-1",
+        "price": 20,
+        "description": "this is an dummy product"
+    },
+    {
+        "product_id": 2,
+        "product_name": "product-2",
+        "price": 60,
+        "description": "this is an dummy product"
+    }
+]
