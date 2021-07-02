@@ -21,7 +21,6 @@ const OrdersSchema = new Schema(
         ship_store_lat: { type: String },
         ship_store_lng: { type: String },
         carrier_code: { type: String },
-        items: [],
     },
     {
         timestamps: true,

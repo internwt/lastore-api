@@ -9,6 +9,7 @@ const checkUserExistsByEmail = async (email) => {
 
 const registerUser = async (req, res) => {
     let { name, email, password } = req.body;
+    console.log(`name`, name, email, password)
     email = email.toLowerCase();
     let checkUser = await checkUserExistsByEmail(email)
     if (checkUser) {
