@@ -9,7 +9,6 @@ const checkUserExistsByEmail = async (email) => {
 
 const registerUser = async (req, res) => {
     let { name, email, password } = req.body;
-    console.log(`name`, name, email, password)
     email = email.toLowerCase();
     let checkUser = await checkUserExistsByEmail(email)
     if (checkUser) {
@@ -30,22 +29,22 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     let { email, password } = req.body
     let checkUser = await checkUserExistsByEmail(email)
-    console.log(`checkuser`, checkUser)
     email = email.toLowerCase();
     if (empty(checkUser)) {
         return res.status(404).send('user not found.')
     }
     if (!await bcrypt.compare(password, checkUser.password)) {
-        return res.status(200).send('password wrong please try again later.')
+        return res.status(400).send('password wrong please try again later.')
     }
     jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
         data: checkUser.password
-    }, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
+    }, '1daysofcoding', (err, token) => {
+        console.log(`checkUsercheckUser`, process.env.ACCESS_TOKEN_SECRET, err)
         if (err) {
             return res.status(400).send('something went wrong')
         }
-        return res.status(201).send({ token, user_id: checkUser.id })
+        return res.status(201).send({ token, user: checkUser })
     })
 
 }
