@@ -1,5 +1,5 @@
 const Product = require('../../model/product')
-
+// get product list
 const getProductList = async (req, res, next) => {
     const getData = await Product.find()
     if (getData.length) {
