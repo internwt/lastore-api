@@ -2,7 +2,6 @@ const Product = require('../../model/product')
 
 const getProductList = async (req, res, next) => {
     const getData = await Product.find()
-    console.log(`getData`, getData)
     if (getData.length) {
         res.status(200).json({
             isFound: true,
@@ -36,7 +35,20 @@ const getProductDetailById = async (req, res, next) => {
     }
 }
 
+
+const addProduct = async (req, res, next) => {
+    const { name, image, quantity, description, status, rating, price } = req.body;
+    const newProduct = new Product({ name, image, quantity, description, status, rating, price })
+    const addProduct = await newProduct.save()
+    if (addProduct) {
+        res.status(201).json({ isError: true, product: newProduct, message: 'product created successfully' })
+    } else {
+        res.status(404).json({ isError: true, message: 'Something went wrong' })
+    }
+
+}
 module.exports = {
     getProductList,
-    getProductDetailById
+    getProductDetailById,
+    addProduct
 }
