@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-var mongoUrl = 'mongodb://localhost:27017/'
+var mongoUrl = 'mongodb+srv://lastore:Lastore%40123@cluster0.glqyi.mongodb.net/lastore?authSource=admin&replicaSet=atlas-rizg3t-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true'
 function connectDB() {
     // Database connection 🥳
     mongoose.connect(mongoUrl, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
