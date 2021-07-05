@@ -10,7 +10,7 @@ connectDB();
 // import all controllers
 const Users = require('./Controller/UserController/userRoute')
 const Product = require('./Controller/ProductController/productRoute')
-const Order = require('./Controller/OrderController/orderRoute')
+const Order = require('./Controller/OrderController/OrderRoute')
 
 app.use('/api/users', Users)
 app.use('/api/products', Product)

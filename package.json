@@ -17,6 +17,7 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.14",
+    "stripe": "^8.160.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
