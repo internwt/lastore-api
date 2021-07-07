@@ -1,11 +1,11 @@
 const express = require('express')
 const cors = require('cors')
+require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 const connectDB = require('./config/db');
 connectDB();
-
 
 const WebHook = require('./Controller/WebHookController/WebhookRoute')
 app.use('/api/webhook', express.raw({ type: "*/*" }), WebHook)
