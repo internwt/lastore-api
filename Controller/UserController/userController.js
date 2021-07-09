@@ -6,7 +6,11 @@ const User = require('../../model/user')
 const empty = require('is-empty')
 
 const checkUserExistsByEmail = async (email) => {
-    return await User.findOne({ email })
+    try {
+        return await User.findOne({ email })
+    } catch (error) {
+        return error
+    }
 }
 
 const registerUser = async (req, res) => {
@@ -14,15 +18,27 @@ const registerUser = async (req, res) => {
     email = email.toLowerCase();
     let checkUser = await checkUserExistsByEmail(email)
     if (checkUser) {
-        return res.status(404).send(`user already created exists with this ${email} address`)
+        return res.status(404).json({
+            status: false,
+            statusCode: 404,
+            message: "User with this email address already exists",
+        })
     }
     password = bcrypt.hashSync(password, 8)
     const user = new User({ name, email, password })
     const newUser = await user.save()
     if (newUser) {
-        return res.status(200).send({
-            message: 'user created successfully',
-            isError: false
+        let returnOp = {
+            status: true,
+            statusCode: 200,
+            message: "User has been signin successfully."
+        };
+        return res.status(200).json(returnOp);
+    } else {
+        return res.status(404).json({
+            status: false,
+            statusCode: 500,
+            message: "Something went wrong. Please try again",
         })
     }
     // error case  when newUser not created
@@ -33,20 +49,39 @@ const loginUser = async (req, res) => {
     let checkUser = await checkUserExistsByEmail(email)
     email = email.toLowerCase();
     if (empty(checkUser)) {
-        return res.status(404).send('user not found.')
+        return res.status(404).send({
+            status: false,
+            statusCode: 404,
+            message: 'user not found.'
+        })
     }
     if (!await bcrypt.compare(password, checkUser.password)) {
-        return res.status(400).send('password wrong please try again later.')
+        return res.status(400).send({
+            status: false,
+            statusCode: 400,
+            message: 'password wrong please try again later.'
+        })
     }
     jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
         data: checkUser.password
     }, '1daysofcoding', (err, token) => {
-        console.log(`checkUsercheckUser`, process.env.ACCESS_TOKEN_SECRET, err)
         if (err) {
-            return res.status(400).send('something went wrong')
+            return res.status(400).send({
+                status: false,
+                statusCode: 400,
+                message: 'Something went wrong please try again later.'
+            })
         }
-        return res.status(201).send({ token, user: checkUser })
+        let userDetails = checkUser
+        userDetails['password'] = ''
+        console.log(userDetails, token)
+        return res.status(201).json({
+            status: false,
+            statusCode: 201,
+            message: 'User login successfully',
+            data: { userDetails, token },
+        })
     })
 
 }
