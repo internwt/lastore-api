@@ -21,7 +21,7 @@ const createPayment = async (req, res) => {
 const createOrder = async (orderDetails) => {
   const { first_name, last_name, company, address, country, city, state, zip, sub_total, payment_intent, user_id } = orderDetails;
   const order_number = genrateUniqeId('order_')
-  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number })
+  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number,user_id })
   const createOrder = await newOrder.save()
   return createOrder;
 }
@@ -71,9 +71,11 @@ const checkoutSession = async (req, res) => {
     payment_method_types: ['card'],
     line_items,
     mode: 'payment',
+    customer_email: req.body.email,
     success_url: `http://localhost:3000/OrderConfirmation`,
     cancel_url: 'http://localhost:3000/OrderConfirmation',
   });
+  console.log(`req.bododood`, req.body)
   const newOrder = await createOrder({ ...req.body, payment_intent: session.payment_intent, sub_total })
   res.status(200).send({
     isError: false,
