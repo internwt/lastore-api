@@ -27,6 +27,22 @@ const createOrder = async (orderDetails) => {
 }
 
 const orderList = async (req, res, next) => {
+  const { user_id } = req.params
+  try {
+    const getData = await Order.find({ user_id })
+    return res.status(200).json({
+      isFound: true,
+      data: getData,
+      message: 'List found Successfully'
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(404).json({
+      isFound: false,
+      message: 'Something went wrong,please try again',
+      error: err
+    })
+  }
 }
 
 const orderDetailById = async (req, res, next) => {
