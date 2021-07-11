@@ -19,9 +19,9 @@ const createPayment = async (req, res) => {
 }
 
 const createOrder = async (orderDetails) => {
-  const { first_name, last_name, company, address, country, city, state, zip, sub_total, payment_intent } = orderDetails;
+  const { first_name, last_name, company, address, country, city, state, zip, sub_total, payment_intent, user_id } = orderDetails;
   const order_number = genrateUniqeId('order_')
-  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number, user_id: 1 })
+  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number })
   const createOrder = await newOrder.save()
   return createOrder;
 }
