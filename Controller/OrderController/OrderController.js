@@ -3,12 +3,6 @@ const stripe = require("stripe")("sk_test_51J9jekDoHVnUxfaGTUuLrL6KeNfzlN0tAbEtv
 const Order = require('../../model/order')
 const { genrateUniqeId } = require('../../Utlis/common')
 
-const calculateOrderAmount = items => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
-};
 
 
 
@@ -29,6 +23,7 @@ const createOrder = async (orderDetails) => {
   const order_number = genrateUniqeId('order_')
   const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number, user_id: 1 })
   const createOrder = await newOrder.save()
+  return createOrder;
 }
 
 const orderList = async (req, res, next) => {
@@ -60,12 +55,15 @@ const checkoutSession = async (req, res) => {
     payment_method_types: ['card'],
     line_items,
     mode: 'payment',
-    success_url: `http://localhost:3000/checkout`,
-    cancel_url: 'http://localhost:3000/checkout',
+    success_url: `http://localhost:3000/OrderConfirmation`,
+    cancel_url: 'http://localhost:3000/OrderConfirmation',
   });
-  console.log(`sessciot`, session)
-  const newOrder = createOrder({ ...req.body, payment_intent: session.payment_intent, sub_total })
-  res.send(session.url)
+  const newOrder = await createOrder({ ...req.body, payment_intent: session.payment_intent, sub_total })
+  res.status(200).send({
+    isError: false,
+    data: { url: session.url, order_id: newOrder._id },
+    statusCode: 201,
+  })
 }
 module.exports = {
   createOrder,

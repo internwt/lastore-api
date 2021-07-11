@@ -47,8 +47,23 @@ const addProduct = async (req, res, next) => {
     }
 
 }
+
+const searchProduct = async (req, res, next) => {
+    const { search } = req.query
+    if (search.length === 0) {
+        return res.status(200).send({ isError: false, data: [], message: 'product found successfully.' })
+    }
+    try {
+        const productData = await Product.find({ name: { $regex: search, $options: '$i' } })
+        return res.status(200).send({ isError: false, data: productData, message: 'product found successfully.' })
+    } catch (error) {
+        return res.status(404).send({ message: 'something went wrong please try again later.', isError: true, statusCode: 404, data: error })
+    }
+
+}
 module.exports = {
     getProductList,
     getProductDetailById,
-    addProduct
+    addProduct,
+    searchProduct
 }
