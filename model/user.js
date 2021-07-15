@@ -9,6 +9,8 @@ const Users = new Schema({
         type: String,
         required: false,
     },
+    reset_active: { type: Boolean, default: false },
+    expiration_time: { type: String, required: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Users', Users);

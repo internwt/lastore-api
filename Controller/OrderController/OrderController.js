@@ -1,5 +1,5 @@
 
-const stripe = require("stripe")("sk_test_51J9jekDoHVnUxfaGTUuLrL6KeNfzlN0tAbEtvZ6EWadxaAfUtVouXCy9QW7PqqJEALP5S1Jo35MQ5rBsUqHXHiSr00C6j5XsYr");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Order = require('../../model/order')
 const { genrateUniqeId } = require('../../Utlis/common')
 
@@ -20,8 +20,9 @@ const createPayment = async (req, res) => {
 
 const createOrder = async (orderDetails) => {
   const { first_name, last_name, company, address, country, city, state, zip, sub_total, payment_intent, user_id } = orderDetails;
+  console.log(`orderdeta`, orderDetails)
   const order_number = genrateUniqeId('order_')
-  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number,user_id })
+  const newOrder = new Order({ first_name, last_name, company, address, country, city, state, zip, payment_intent, sub_total, order_Id: "ufiuwe", order_number, user_id })
   const createOrder = await newOrder.save()
   return createOrder;
 }
@@ -72,8 +73,8 @@ const checkoutSession = async (req, res) => {
     line_items,
     mode: 'payment',
     customer_email: req.body.email,
-    success_url: `http://localhost:3000/OrderConfirmation`,
-    cancel_url: 'http://localhost:3000/OrderConfirmation',
+    success_url: `https://lastore.netlify.app/OrderConfirmation`,
+    cancel_url: 'https://lastore.netlify.app/OrderConfirmation',
   });
   console.log(`req.bododood`, req.body)
   const newOrder = await createOrder({ ...req.body, payment_intent: session.payment_intent, sub_total })

@@ -2,7 +2,6 @@ const Order = require('../../model/order')
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_END_POINT_SECRET
-
 const webHookEvents = async (request, res) => {
     const sig = request.headers['stripe-signature'];
     let event;
