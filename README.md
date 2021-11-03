@@ -21,7 +21,6 @@ Backend: https://github.com/internwt/lastore-api
 - [Setup](#setup)
 - [Project Status](#project-status)
 - [Sources](#sources)
-- [Screenshots](#screenshots)
 - [Contributors](#contributors)
 
 ## Introduction
